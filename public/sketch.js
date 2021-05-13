@@ -11,6 +11,7 @@ function setup() {
     fill(255)
     textSize(32)
     text(isMobile, 0, 100)
+    rectMode(CENTER)
 
     if (params.has('g')) {
         socket.emit('login', params.get('g'))
@@ -31,8 +32,10 @@ function setup() {
     }
 
     if (!isMobile) {
+        let box = new Box()
         socket.on('getGyro', (coords) => {
-            console.log(coords)
+            background(0)
+            box.rotate(coords.alpha)
         })
     }
 }

@@ -1,6 +1,13 @@
+const fs = require('fs')
 const express = require('express')
 const app = express()
-const httpServer = require('http').createServer(app)
+const httpServer = require('https').createServer(
+    {
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+    },
+    app
+)
 const options = {}
 const io = require('socket.io')(httpServer, options)
 
@@ -15,7 +22,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendGyro', (g, coords) => {
-        console.log(coords)
         io.to(g).emit('getGyro', coords)
     })
 })
